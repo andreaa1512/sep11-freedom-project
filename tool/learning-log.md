@@ -7,7 +7,7 @@ Project: **Unsure at the moment**
 ---
 
 10/23/23:
-* i started duing the tutorial on kaboom.js. while there are new terms, they seem preety simple.
+* i started duing the tutorial on kaboom.js. while there are new terms, they seem pretty simple.
 * rect() renders a rectangle. It accepts 2 arguments, the width and height, which we give it the game width (returned by width()) and height of 48 pixels
 * pos() position. We give it a x: 0 and y: height() - 48 so it sits right on the bottom of the screen
 outline() renders an outline of 4 pixels
