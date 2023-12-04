@@ -2,7 +2,7 @@
 
 Tool: **Kaboom JS**
 
-Project: **Unsure at the moment**
+Project: **Otter river game**
 
 ---
 
@@ -15,9 +15,22 @@ outline() renders an outline of 4 pixels
 * body({ isStatic: true }) the object won't move, and all non static objects won't move past it
 * color() makes it render with an RGB color, we give it a R: 127 G: 200 B: 255 which is a blue-ish color
 
-X/X/X:
-* Text
+11/06/23:
+* when adding something, `add ([...])` must be with `([])`
+* ```javascript
+   add([
+     text("hello"),
+      pos(120, 80),
+       ]);
+```html
 
+
+11/27/23
+Tutorial
+* because sprite was in a folder what i did not have = error of sprte not showing up.
+* once name of "folder" was removed, sprite showed up.
+* setGravity not working no matter where its placed???
+*
 
 <!--
 * Links you used today (websites, videos, etc)
