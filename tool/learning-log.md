@@ -32,6 +32,11 @@ Tutorial
 * setGravity not working no matter where its placed???
 *
 
+12/04/23
+* helped luis all day
+
+
+
 <!--
 * Links you used today (websites, videos, etc)
 * Things you tried, progress you made, etc
