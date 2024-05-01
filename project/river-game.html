@@ -5,22 +5,52 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="module">
+        import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
+            // Initialize kaboom
+            kaboom()
+
+            loadSprite("duck", "images/duck.png");
 
 
-           import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
+            // Set up the game environment
+            scene("game", () => {
+            const river = add([
+                rect(width(), height()),
+                color(0, 128, 128),
+                anchor("center"),
+            ])
 
-           kaboom();
+            const player = add([
+                sprite("duck.png"),
+                pos(width() / 2, height() / 2),
+                area(),
+                body(),
+                {
+                speed: 200,
+                },
+            ])
 
-         add([
-            rect(width(), 48),
-            pos(0, height() - 48),
-            outline(4),
-            area(all),
-            body({ isStatic: true }),
-            color(127, 200, 255),
-        ])
+            isKeyDown("left", () => {
+                duck.move(-duck.speed, 0)
+            })
+
+            isKeyDown("right", () => {
+                duck.move(duck.speed, 0)
+            })
+
+            onKeyPress("space", jump);
+            onClick(jump);
+
+
+            player.onCollide("river", () => {
+                duck.pos.y = height() / 2
+            })
+            })
+
+            go("game")
+
+
+
         </script>
-
-
     </head>
 </html>
