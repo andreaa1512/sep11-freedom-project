@@ -1,0 +1,121 @@
+<script type="module">
+    import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
+
+    const FLOOR_HEIGHT = 48;
+    const JUMP_FORCE = 800;
+    const SPEED = 480;
+
+    // initialize context
+    kaboom({
+      background: [0, 204, 255],
+    })
+
+    // load assets
+    loadSprite("kid", "images/kid2.webp");
+    loadSprite("duck", "images/duck.png");
+    loadSprite("hw", "images/hw.jpg")
+
+    scene("game", () => {
+      // define gravity
+      setGravity(1600);
+
+      // add player to screen
+      const collector = add([
+        sprite("kid"),
+        pos(80, 40),
+        area(),
+        body(),
+      ]);
+
+      // floor
+      add([
+        rect(width(), FLOOR_HEIGHT),
+        outline(4),
+        pos(0, height()),
+        anchor("botleft"),
+        area(),
+        body({ isStatic: true }),
+        color(51, 208, 51),
+      ]);
+
+      function jump() {
+        if (collector.isGrounded()) {
+          collector.jump(JUMP_FORCE);
+        }
+      }
+
+      // functions to move
+      onKeyPress("space", jump);
+      onClick(jump);
+
+      onKeyDown('right', () => {
+        collector.move(200, 0)
+      })
+
+      onKeyDown('left', () => {
+        collector.move(-200, 0)
+      })
+
+      let score = 0;
+
+      // add falling ducks and homework
+      onLoad(() => {
+        for (let i = 0; i < 100; i++) {
+          let x = rand(width());
+          let randNum = Math.random();
+          if (randNum < 0.7) { // 70% chance of spawning a duck
+            addFallingObject("duck", x, 0);
+          } else { // 30% chance of spawning homeworkaddFallingObject("hw", x, 0);
+    }
+  }
+});
+
+
+      onUpdate("falling", (obj) => {
+        obj.move(0, 30);
+      });
+
+      onUpdate("falling", (obj) => {
+        obj.move(0, 30);
+        // add collision detection to duck
+        if (obj.isColliding(collector)) {
+            score += 1;
+            destroy(obj);
+            scoreText.text = `Score: ${score}`;
+        }
+            });
+
+            collector.onCollide("hw", (hw) => {
+            go("gameOver"); // transition to the game over scene
+            });
+
+
+
+      // collector.onCollide("duck", (duck) => {
+      //   score += 1;
+      //   destroy(duck);
+      //   scoreText.text = `Score: ${score}`;
+      // });
+
+      // text to display score
+      const scoreText = add([
+        text(`Score: ${score}`),
+        pos(10, 10),
+      ]);
+
+      // collector.onCollide("hw", (hw) => {
+      //   destroy(hw); // remove the collectible sprite
+      //   go("gameOver"); // transition to the game over scene
+      // });
+
+      scene("gameOver", () => {
+        add([
+          text("Game Over!"),
+          pos(width() / 2, height() / 2),
+          origin("center"),
+        ]);
+      });
+    });
+
+    go("game");
+  </script>

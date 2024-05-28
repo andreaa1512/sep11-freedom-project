@@ -1,0 +1,119 @@
+<script type="module">
+    import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
+
+    const FLOOR_HEIGHT = 48;
+    const JUMP_FORCE = 800;
+    const SPEED = 480;
+
+    // initialize context
+    kaboom({
+      background: [0, 204, 255],
+    })
+
+    // load assets
+    loadSprite("kid", "images/kid2.webp");
+    loadSprite("duck", "images/duck.png");
+    loadSprite("hw", "images/hw.jpg")
+
+    scene("game", () =>{
+      // add player to screen
+      const collector = add([
+        sprite("kid"),
+        pos(80, height() - FLOOR_HEIGHT),
+        area(),
+        body({
+          gravity: true,
+        }),
+      ]);
+
+      // floor
+      add([
+        rect(width(), FLOOR_HEIGHT),
+        outline(4),
+        pos(0, height()),
+        anchor("botleft"),
+        area(),
+        body({ isStatic: true }),
+        color(51, 208, 51),
+      ]);
+
+      function jump() {
+        if (collector.isGrounded()) {
+          collector.jump(JUMP_FORCE);
+        }
+      }
+
+      // functions to move
+      onKeyPress("space", jump);
+      onClick(jump);
+
+      onKeyDown('right', () => {
+        collector.move(SPEED, 0)
+      })
+
+      onKeyDown('left', () => {
+        collector.move(-SPEED, 0)
+      })
+
+      let score = 0;
+
+      // add falling ducks and homework
+      onLoad(() => {
+        for (let i = 0; i < 100; i++) {
+          let x = rand(width());
+          let randNum = Math.random();
+          if (randNum < 0.7) { // 70% chance of spawning a duck
+            addFallingObject("duck", x, 0);
+          } else { // 30% chance of spawning homework
+            addFallingObject("hw", x, 0);
+          }
+        }
+      });
+
+      function addFallingObject(type, x, y) {
+        add([
+          sprite(type),
+          pos(x, y),
+          area(),
+          "falling",
+          { sprite: type } // add sprite property to object
+        ]);
+      }
+
+      onUpdate("falling", (obj) => {
+        obj.move(0, 30);
+        // add collision detection to duck and homework
+        if (obj.isColliding(collector)) {
+          if (obj.sprite === "duck") {
+            score += 1;
+            destroy(obj);
+            scoreText.text = `Score: ${score}`;
+          } else if (obj.sprite === "hw") {
+            go("gameOver"); // transition to the game over scene
+          }
+        }
+      });
+
+      // text to display score
+      const scoreText = add([
+        text(`Score: ${score}`),
+        pos(10, 10),
+      ]);
+
+      function restartGame() {
+        score = 0;
+        go("game");
+      }
+
+      scene("gameOver", () => {
+        add([
+          text("Game Over!", { size: 32 }),
+          pos(width() / 2, height() / 2),
+        ]);
+      });
+
+    })
+
+    go("game");
+
+  </script>
