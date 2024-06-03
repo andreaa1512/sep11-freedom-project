@@ -15,8 +15,11 @@ For my project, I chose to independently study **Javascript** in order to help m
 ## Implications
 ##### PROS
 * Easy once you get a hold of the controls
+* Can be a way to make a fun game
+* 
 ##### CONS
 * Controls were hard to grasp at first
+* A long process of code
 
 
 ## Blog
